@@ -56,7 +56,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	} */
 	for _, rdata := range datas {
 		data := rdata.FindAll("a")
-		log.Println(data)
+		log.Println(data[0], data[1])
 		break
 	}
 	_, _, _ = em.EditText(b, "Check logs! (Devs!)", nil)
