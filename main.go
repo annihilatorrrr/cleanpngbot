@@ -56,7 +56,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	} */
 	for _, rdata := range datas {
 		data := rdata.Find("a")
-		log.Println(data.FullText(), data.Attrs()["href"])
+		log.Println(data.FullText(), fmt.Sprintf("https://www.cleanpng.com%s", data.Attrs()["href"]))
 		break
 	}
 	_, _, _ = em.EditText(b, "Check logs! (Devs!)", nil)
