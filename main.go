@@ -33,6 +33,9 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	query := strings.ToLower(msg.Text)
+	if strings.Contains(query, " ") {
+		query = strings.Join(strings.Split(query, " "), "-")
+	}
 	raw, err := soup.Get(fmt.Sprintf("https://www.cleanpng.com/free/%s.html", query))
 	if err != nil {
 		_, _, _ = em.EditText(b, err.Error(), nil)
@@ -40,7 +43,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
-	txt := fmt.Sprintf("<b>Here's the search results for %s:</b>\n\n", query)
+	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolution and disk size:</b>\n\n", query)
 	for _, rdata := range datas {
 		aa = true
 		pd := rdata.FindAll("p")
