@@ -39,7 +39,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	data := soup.HTMLParse(raw)
-	log.Println(data.Find("div", "id"))
+	log.Println(data)
 	_, _, _ = em.EditText(b, "Check logs! (Devs!)", nil)
 	return ext.EndGroups
 }
