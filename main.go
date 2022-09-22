@@ -56,7 +56,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	} */
 	for _, rdata := range datas {
 		log.Printf("https://www.cleanpng.com%s\n", rdata.Find("a").Attrs()["href"])
-		log.Println(rdata.Find("list-img-big").FullText())
+		log.Println(rdata.Find("p").Attrs()["list-img-big"])
 		log.Println(rdata.Find("list-img-size").FullText())
 		break
 	}
