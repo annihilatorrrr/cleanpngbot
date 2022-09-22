@@ -15,7 +15,8 @@ import (
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng.com!\nBy @Memers_Gallery!", nil)
+	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng.com!\nBy @Memers_Gallery!\nSourceCode: https://github.com/annihilatorrrr/cleanpngbot",
+		&gotgbot.SendMessageOpts{DisableWebPagePreview: true})
 	return ext.EndGroups
 }
 
