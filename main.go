@@ -15,7 +15,7 @@ import (
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng site!\nBy @Memers_Gallery!", nil)
+	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng.com!\nBy @Memers_Gallery!", nil)
 	return ext.EndGroups
 }
 
@@ -36,7 +36,6 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if strings.Contains(query, " ") {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
-	log.Println(query)
 	raw, err := soup.Get(fmt.Sprintf("https://www.cleanpng.com/free/%s.html", query))
 	if err != nil {
 		_, _, _ = em.EditText(b, err.Error(), nil)
@@ -56,14 +55,14 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		)
 	}
 	if !aa {
-		txt += "No data Found!"
+		txt = "No data Found!"
 	}
 	_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
 	return ext.EndGroups
 }
 
 func main() {
-	token := "5793391546:AAFaACVFk0lpKn8jWLTn78Hpl2pnNs8sEvs" // os.Getenv("TOKEN")
+	token := os.Getenv("TOKEN")
 	b, err := gotgbot.NewBot(token, nil)
 	if err != nil {
 		panic(err.Error())
@@ -72,7 +71,7 @@ func main() {
 		ErrorLog: nil,
 		DispatcherOpts: ext.DispatcherOpts{
 			Error: func(b *gotgbot.Bot, ctx *ext.Context, err error) ext.DispatcherAction {
-				log.Println("An error occurred while handling update:", err.Error())
+				log.Printf("An error occurred while handling update:\n%s", err.Error())
 				return ext.DispatcherActionNoop
 			},
 			MaxRoutines: 20,
