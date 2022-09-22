@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
 	"log"
 	"os"
 	"runtime"
@@ -76,10 +75,20 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 }
 
 func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
+	log.Println("OK")
 	q := ctx.InlineQuery
 	if q.Query == "" {
 		_, err := q.Answer(b, []gotgbot.InlineQueryResult{
 			gotgbot.InlineQueryResultArticle{Title: "Error:", Description: "Write some query!", InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"}},
+		}, nil)
+		if err != nil {
+			log.Println(err.Error())
+		}
+		return ext.EndGroups
+	}
+	if len(q.Query) > 50 {
+		_, err := q.Answer(b, []gotgbot.InlineQueryResult{
+			gotgbot.InlineQueryResultArticle{Title: "Error:", Description: "Query too big!", InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"}},
 		}, nil)
 		if err != nil {
 			log.Println(err.Error())
@@ -142,7 +151,7 @@ func main() {
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
-	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
+	dispatcher.AddHandler(handlers.NewInlineQuery(nil, sendinline))
 	log.Printf("%s has been started!\n", b.User.Username)
 	runtime.GC()
 	updater.Idle()
