@@ -38,9 +38,8 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		_, _, _ = em.EditText(b, err.Error(), nil)
 		return ext.EndGroups
 	}
-	data := soup.HTMLParse(raw)
-	datas := data.Find("div", "id", "").FindAll("a")
-	for _, link := range datas {
+	data := soup.HTMLParse(raw).FindAll("a")
+	for _, link := range data {
 		log.Println(link.Text(), "| Link :", link.Attrs()["href"])
 	}
 	_, _, _ = em.EditText(b, "Check logs! (Devs!)", nil)
