@@ -2,49 +2,39 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+
+	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
+
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/message"
 	"github.com/anaskhan96/soup"
-	"log"
-	"os"
-	"runtime"
-	"strconv"
-	"strings"
+	"github.com/google/uuid"
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng.com!\nBy @Memers_Gallery!\nSourceCode: https://github.com/annihilatorrrr/cleanpngbot",
+	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
 		&gotgbot.SendMessageOpts{DisableWebPagePreview: true})
 	return ext.EndGroups
 }
 
-func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
-	msg := ctx.EffectiveMessage
-	if msg.Text == "" {
-		return ext.EndGroups
-	}
-	if len(msg.Text) > 50 {
-		_, _ = msg.Reply(b, "Query too big!", nil)
-		return ext.EndGroups
-	}
-	em, err := msg.Reply(b, "Finding ...", nil)
-	if err != nil {
-		return ext.EndGroups
-	}
-	query := strings.ToLower(msg.Text)
+func procequery(rquery string) string {
+	query := strings.ToLower(rquery)
 	if strings.Contains(query, " ") {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	raw, err := soup.Get(fmt.Sprintf("https://www.cleanpng.com/free/%s.html", query))
 	if err != nil {
-		_, _, _ = em.EditText(b, err.Error(), nil)
-		return ext.EndGroups
+		return err.Error()
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
-	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolution and disk size:</b>\n\n", query)
+	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolutions and disk sizes:</b>\n\n", query)
 	for _, rdata := range datas {
 		pd := rdata.FindAll("p")
 		if len(pd) < 3 {
@@ -62,10 +52,62 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if !aa {
 		txt = "No data Found!\n<b>@Memers_Gallery</b>"
 	}
+	return txt
+}
+
+func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
+	msg := ctx.EffectiveMessage
+	if msg.Text == "" || msg.ViaBot != nil {
+		return ext.EndGroups
+	}
+	if len(msg.Text) > 50 {
+		_, _ = msg.Reply(b, "Query is too big to search!", nil)
+		return ext.EndGroups
+	}
+	em, err := msg.Reply(b, "Finding ...", nil)
+	if err != nil {
+		return ext.EndGroups
+	}
+	txt := procequery(msg.Text)
 	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
 	if err != nil {
 		_, _, _ = em.EditText(b, err.Error(), nil)
 	}
+	return ext.EndGroups
+}
+
+func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
+	q := ctx.InlineQuery
+	if q.Query == "" {
+		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
+			gotgbot.InlineQueryResultArticle{
+				Id:                  uuid.NewString(),
+				Title:               "Error:",
+				Description:         "Write some query!",
+				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
+			},
+		}, nil)
+		return ext.EndGroups
+	}
+	if len(q.Query) > 50 {
+		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
+			gotgbot.InlineQueryResultArticle{
+				Id:                  uuid.NewString(),
+				Title:               "Error:",
+				Description:         "Query too big!",
+				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
+			},
+		}, nil)
+		return ext.EndGroups
+	}
+	txt := procequery(q.Query)
+	_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
+		gotgbot.InlineQueryResultArticle{
+			Id:                  uuid.NewString(),
+			Title:               "Results!",
+			InputMessageContent: gotgbot.InputTextMessageContent{MessageText: txt, ParseMode: "html", DisableWebPagePreview: true},
+		},
+	}, nil)
 	return ext.EndGroups
 }
 
@@ -96,9 +138,15 @@ func main() {
 			MaxRoutines: 20,
 		},
 	})
+
+	dispatcher := updater.Dispatcher
+	dispatcher.AddHandler(handlers.NewCommand("start", start))
+	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
+	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
+
 	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
-		AllowedUpdates:     []string{"message"},
+		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result"},
 		MaxConnections:     20,
 		SecretToken:        "xyzzz",
 	})
@@ -112,11 +160,6 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	dispatcher := updater.Dispatcher
-	dispatcher.AddHandler(handlers.NewCommand("start", start))
-	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 	log.Printf("%s has been started!\n", b.User.Username)
-	runtime.GC()
 	updater.Idle()
-	_ = updater.Stop()
 }
