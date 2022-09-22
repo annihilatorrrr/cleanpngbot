@@ -36,6 +36,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if strings.Contains(query, " ") {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
+	log.Println(query)
 	raw, err := soup.Get(fmt.Sprintf("https://www.cleanpng.com/free/%s.html", query))
 	if err != nil {
 		_, _, _ = em.EditText(b, err.Error(), nil)
