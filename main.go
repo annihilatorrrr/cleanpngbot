@@ -21,27 +21,14 @@ func start(b *gotgbot.Bot, ctx *ext.Context) error {
 	return ext.EndGroups
 }
 
-func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
-	msg := ctx.EffectiveMessage
-	if msg.Text == "" {
-		return ext.EndGroups
-	}
-	if len(msg.Text) > 50 {
-		_, _ = msg.Reply(b, "Query too big!", nil)
-		return ext.EndGroups
-	}
-	em, err := msg.Reply(b, "Finding ...", nil)
-	if err != nil {
-		return ext.EndGroups
-	}
-	query := strings.ToLower(msg.Text)
+func procequery(rquery string) string {
+	query := strings.ToLower(rquery)
 	if strings.Contains(query, " ") {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	raw, err := soup.Get(fmt.Sprintf("https://www.cleanpng.com/free/%s.html", query))
 	if err != nil {
-		_, _, _ = em.EditText(b, err.Error(), nil)
-		return ext.EndGroups
+		return err.Error()
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
@@ -63,9 +50,37 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if !aa {
 		txt = "No data Found!\n<b>@Memers_Gallery</b>"
 	}
+	return txt
+}
+
+func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
+	msg := ctx.EffectiveMessage
+	if msg.Text == "" {
+		return ext.EndGroups
+	}
+	if len(msg.Text) > 50 {
+		_, _ = msg.Reply(b, "Query too big!", nil)
+		return ext.EndGroups
+	}
+	em, err := msg.Reply(b, "Finding ...", nil)
+	if err != nil {
+		return ext.EndGroups
+	}
+	txt := procequery(msg.Text)
 	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
 	if err != nil {
 		_, _, _ = em.EditText(b, err.Error(), nil)
+	}
+	return ext.EndGroups
+}
+
+func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
+	q := ctx.InlineQuery
+	if q.Query == "" {
+		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
+			gotgbot.InlineQueryResultArticle{Title: "Error:", Description: "Write some query!"},
+		}, nil)
+		return ext.EndGroups
 	}
 	return ext.EndGroups
 }
@@ -116,6 +131,7 @@ func main() {
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
+	dispatcher.AddHandler(handlers.NewInlineQuery(nil, sendinline))
 	log.Printf("%s has been started!\n", b.User.Username)
 	runtime.GC()
 	updater.Idle()
