@@ -76,7 +76,6 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 }
 
 func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
-	log.Println("OK")
 	q := ctx.InlineQuery
 	if q.Query == "" {
 		_, err := q.Answer(b, []gotgbot.InlineQueryResult{
