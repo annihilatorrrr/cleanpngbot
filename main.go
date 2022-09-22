@@ -38,7 +38,22 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		_, _, _ = em.EditText(b, err.Error(), nil)
 		return ext.EndGroups
 	}
-	data := soup.HTMLParse(raw).FindAll("a")
+	data := soup.HTMLParse(raw).FindAll("article")
+	/* aa := false
+	for _, link := range data {
+		if link.Text() == "New Resources" {
+			break
+		}
+		if link.Text() == "Reset all filters" {
+			aa = true
+			continue
+		}
+		if !aa {
+			continue
+		}
+		log.Println(link.FullText())
+		log.Println(link.Text(), "| Link :", link.Attrs()["href"])
+	} */
 	for _, link := range data {
 		log.Println(link.Text(), "| Link :", link.Attrs()["href"])
 	}
