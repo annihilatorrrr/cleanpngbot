@@ -78,10 +78,14 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 	q := ctx.InlineQuery
 	if q.Query == "" {
 		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
-			gotgbot.InlineQueryResultArticle{Title: "Error:", Description: "Write some query!"},
+			gotgbot.InlineQueryResultArticle{Title: "Error:", Description: "Write some query!", InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"}},
 		}, nil)
 		return ext.EndGroups
 	}
+	txt := procequery(q.Query)
+	_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
+		gotgbot.InlineQueryResultArticle{Title: "Results!", InputMessageContent: gotgbot.InputTextMessageContent{MessageText: txt, ParseMode: "html", DisableWebPagePreview: true}},
+	}, nil)
 	return ext.EndGroups
 }
 
