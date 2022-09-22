@@ -1,1 +1,1 @@
-web: ./bin/cleanpng
+web: ./bin/cleanpngbot
