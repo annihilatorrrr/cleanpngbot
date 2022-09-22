@@ -55,10 +55,15 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 			pd[2].Find("span").Text(),
 		)
 	}
+	txt += "\n@Memers_Gallery"
 	if !aa {
-		txt = "No data Found!"
+		txt = "No data Found!\n@Memers_Gallery"
 	}
-	_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
+	if len(txt) > 4020 {
+		_, _, _ = em.EditText(b, "Results are too big to show!\nUse the site: cleanpng.com!\n@Memers_Gallery", nil)
+	} else {
+		_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
+	}
 	return ext.EndGroups
 }
 
