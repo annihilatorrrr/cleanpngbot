@@ -153,7 +153,7 @@ func main() {
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
-		AllowedUpdates: []string{"message", "inline_query", "chosen_inline_result", "callback_query"},
+		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result", "callback_query"},
 		MaxConnections:     20,
 		SecretToken:        "xyzzz",
 	})
