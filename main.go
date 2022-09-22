@@ -147,6 +147,10 @@ func main() {
 			MaxRoutines: 20,
 		},
 	})
+	dispatcher := updater.Dispatcher
+	dispatcher.AddHandler(handlers.NewCommand("start", start))
+	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
+	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
 		AllowedUpdates:     []string{"message", "InlineQuery", "ChosenInlineResult", "callback_query"},
@@ -163,11 +167,6 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	dispatcher := updater.Dispatcher
-	dispatcher.AddHandler(handlers.NewCommand("start", start))
-	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
-	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 	log.Printf("%s has been started!\n", b.User.Username)
 	updater.Idle()
-	_ = updater.Stop()
 }
