@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -68,9 +69,10 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	err = updater.StartWebhook(b,
 		ext.WebhookOpts{
-			Port: 5000,
+			Port: port,
 		})
 	if err != nil {
 		panic(err.Error())
