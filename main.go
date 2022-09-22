@@ -71,6 +71,14 @@ func main() {
 	if token == "" {
 		panic("No token found!")
 	}
+	url := os.Getenv("URL")
+	if url == "" {
+		panic("No webhook url was found!")
+	}
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	if port == 0 {
+		panic("No port found to bind!")
+	}
 	b, err := gotgbot.NewBot(token, nil)
 	if err != nil {
 		panic(err.Error())
@@ -85,7 +93,7 @@ func main() {
 			MaxRoutines: 20,
 		},
 	})
-	_, err = b.SetWebhook(os.Getenv("URL"), &gotgbot.SetWebhookOpts{
+	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
 		AllowedUpdates:     []string{"message"},
 		MaxConnections:     20,
@@ -93,10 +101,6 @@ func main() {
 	})
 	if err != nil {
 		panic(err.Error())
-	}
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	if port == 0 {
-		panic("No port found to bind!")
 	}
 	err = updater.StartWebhook(b,
 		ext.WebhookOpts{
