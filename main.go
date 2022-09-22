@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
 	"log"
 	"os"
 	"runtime"
@@ -141,7 +142,7 @@ func main() {
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
-	dispatcher.AddHandler(handlers.NewInlineQuery(nil, sendinline))
+	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
 	log.Printf("%s has been started!\n", b.User.Username)
 	runtime.GC()
 	updater.Idle()
