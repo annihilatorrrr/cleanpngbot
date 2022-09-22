@@ -59,10 +59,9 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if !aa {
 		txt = "No data Found!\n@Memers_Gallery"
 	}
-	if len(txt) > 4090 {
-		_, _, _ = em.EditText(b, "Results are too big to show!\nUse the site: cleanpng.com!\n@Memers_Gallery", nil)
-	} else {
-		_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
+	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
+	if err != nil {
+		_, _, _ = em.EditText(b, err.Error(), nil)
 	}
 	return ext.EndGroups
 }
