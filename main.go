@@ -55,9 +55,9 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 			pd[2].Find("span").Text(),
 		)
 	}
-	txt += "\n@Memers_Gallery"
+	txt += "\n<b>@Memers_Gallery</b>"
 	if !aa {
-		txt = "No data Found!\n@Memers_Gallery"
+		txt = "No data Found!\n<b>@Memers_Gallery</b>"
 	}
 	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
 	if err != nil {
