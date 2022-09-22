@@ -18,7 +18,7 @@ import (
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
+	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
 		&gotgbot.SendMessageOpts{DisableWebPagePreview: true})
 	return ext.EndGroups
 }
@@ -34,7 +34,7 @@ func procequery(rquery string) string {
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
-	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolution and disk size:</b>\n\n", query)
+	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolutions and disk sizes:</b>\n\n", query)
 	for _, rdata := range datas {
 		pd := rdata.FindAll("p")
 		if len(pd) < 3 {
@@ -57,7 +57,7 @@ func procequery(rquery string) string {
 
 func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	msg := ctx.EffectiveMessage
-	if msg.Text == "" {
+	if msg.Text == "" || msg.ViaBot != nil {
 		return ext.EndGroups
 	}
 	if len(msg.Text) > 50 {
@@ -79,7 +79,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 	q := ctx.InlineQuery
 	if q.Query == "" {
-		_, err := q.Answer(b, []gotgbot.InlineQueryResult{
+		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
 			gotgbot.InlineQueryResultArticle{
 				Id:                  uuid.NewString(),
 				Title:               "Error:",
@@ -87,13 +87,10 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
 			},
 		}, nil)
-		if err != nil {
-			log.Println(err.Error())
-		}
 		return ext.EndGroups
 	}
 	if len(q.Query) > 50 {
-		_, err := q.Answer(b, []gotgbot.InlineQueryResult{
+		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
 			gotgbot.InlineQueryResultArticle{
 				Id:                  uuid.NewString(),
 				Title:               "Error:",
@@ -101,22 +98,16 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
 			},
 		}, nil)
-		if err != nil {
-			log.Println(err.Error())
-		}
 		return ext.EndGroups
 	}
 	txt := procequery(q.Query)
-	_, err := q.Answer(b, []gotgbot.InlineQueryResult{
+	_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
 		gotgbot.InlineQueryResultArticle{
 			Id:                  uuid.NewString(),
 			Title:               "Results!",
 			InputMessageContent: gotgbot.InputTextMessageContent{MessageText: txt, ParseMode: "html", DisableWebPagePreview: true},
 		},
 	}, nil)
-	if err != nil {
-		log.Println(err.Error())
-	}
 	return ext.EndGroups
 }
 
