@@ -46,8 +46,11 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	aa := false
 	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolution and disk size:</b>\n\n", query)
 	for _, rdata := range datas {
-		aa = true
 		pd := rdata.FindAll("p")
+		if len(pd) < 3 {
+			continue
+		}
+		aa = true
 		txt += fmt.Sprintf(`<b>> <a href="https://www.cleanpng.com%s">%s</a> - %s - %s</b>`+"\n",
 			rdata.Find("a").Attrs()["href"],
 			pd[0].Find("a").Text(),
