@@ -39,30 +39,22 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
-	/* aa := false
-	for _, link := range data {
-		if link.Text() == "New Resources" {
-			break
-		}
-		if link.Text() == "Reset all filters" {
-			aa = true
-			continue
-		}
-		if !aa {
-			continue
-		}
-		log.Println(link.FullText())
-		log.Println(link.Text(), "| Link :", link.Attrs()["href"])
-	} */
+	aa := false
+	txt := fmt.Sprintf("<b>Here's the search results for %s:</b>\n\n", query)
 	for _, rdata := range datas {
-		log.Printf("https://www.cleanpng.com%s\n", rdata.Find("a").Attrs()["href"])
+		aa = true
 		pd := rdata.FindAll("p")
-		log.Println(pd[0].Find("a").Text())
-		log.Println(pd[1].Find("span").Text())
-		log.Println(pd[2].Find("span").Text())
-		break
+		txt += fmt.Sprintf(`> <a href="https://www.cleanpng.com%s">%s</a> - %s - %s\n`,
+			rdata.Find("a").Attrs()["href"],
+			pd[0].Find("a").Text(),
+			pd[1].Find("span").Text(),
+			pd[2].Find("span").Text(),
+		)
 	}
-	_, _, _ = em.EditText(b, "Check logs! (Devs!)", nil)
+	if !aa {
+		txt += "No data Found!"
+	}
+	_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{DisableWebPagePreview: true, ParseMode: "html"})
 	return ext.EndGroups
 }
 
