@@ -69,7 +69,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 func main() {
 	token := os.Getenv("TOKEN")
 	if token == "" {
-		panic("No token found!")
+		panic("No bot token was found!")
 	}
 	url := os.Getenv("URL")
 	if url == "" {
@@ -77,7 +77,7 @@ func main() {
 	}
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if port == 0 {
-		panic("No port found to bind!")
+		panic("No port was found to bind!")
 	}
 	b, err := gotgbot.NewBot(token, nil)
 	if err != nil {
