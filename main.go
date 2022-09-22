@@ -60,7 +60,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	if len(msg.Text) > 50 {
-		_, _ = msg.Reply(b, "Query too big!", nil)
+		_, _ = msg.Reply(b, "Query is too big to search!", nil)
 		return ext.EndGroups
 	}
 	em, err := msg.Reply(b, "Finding ...", nil)
@@ -97,7 +97,7 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Id:                  uuid.NewString(),
 				Title:               "Error:",
 				Description:         "Query too big!",
-				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
+				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
 			},
 		}, nil)
 		if err != nil {
