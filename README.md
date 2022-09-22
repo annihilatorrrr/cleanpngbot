@@ -6,4 +6,4 @@
 ### Credits:
 > @annihilatorrrr and @jayantkageri
 
-#### Give a star to the repo if you find it usefull!
+#### Give a star to the repo if you find it useful!
