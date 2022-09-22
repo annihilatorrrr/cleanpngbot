@@ -146,7 +146,7 @@ func main() {
 
 	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
-		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result"},
+		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result", "callback_query"},
 		MaxConnections:     20,
 		SecretToken:        "xyzzz",
 	})
