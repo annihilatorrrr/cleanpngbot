@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
 	"log"
 	"os"
 	"strconv"
@@ -118,10 +119,6 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 	return ext.EndGroups
 }
 
-func something(c *gotgbot.InlineQuery) bool {
-	return c.ChatType == "supergroup"
-}
-
 func main() {
 	token := os.Getenv("TOKEN")
 	if token == "" {
@@ -167,7 +164,7 @@ func main() {
 	}
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
-	dispatcher.AddHandler(handlers.NewInlineQuery(something, sendinline))
+	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 	log.Printf("%s has been started!\n", b.User.Username)
 	updater.Idle()
