@@ -63,6 +63,9 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 
 func main() {
 	token := os.Getenv("TOKEN")
+	if token == "" {
+		panic("No token found!")
+	}
 	b, err := gotgbot.NewBot(token, nil)
 	if err != nil {
 		panic(err.Error())
@@ -87,6 +90,9 @@ func main() {
 		panic(err.Error())
 	}
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	if port == 0 {
+		panic("No port found to bind!")
+	}
 	err = updater.StartWebhook(b,
 		ext.WebhookOpts{
 			Port: port,
