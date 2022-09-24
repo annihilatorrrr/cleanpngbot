@@ -105,6 +105,7 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 		gotgbot.InlineQueryResultArticle{
 			Id:                  uuid.NewString(),
 			Title:               "Results!",
+			Description:         "Found something!",
 			InputMessageContent: gotgbot.InputTextMessageContent{MessageText: txt, ParseMode: "html", DisableWebPagePreview: true},
 		},
 	}, nil)
