@@ -23,7 +23,7 @@ func start(b *gotgbot.Bot, ctx *ext.Context) error {
 			DisableWebPagePreview: true,
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{{
-					SwitchInlineQuery: "",
+					SwitchInlineQuery: " ",
 				}},
 			}},
 		})
