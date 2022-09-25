@@ -18,8 +18,17 @@ import (
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
+	search := ""
 	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
-		&gotgbot.SendMessageOpts{DisableWebPagePreview: true})
+		&gotgbot.SendMessageOpts{
+			DisableWebPagePreview: true,
+			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+				{{
+					Text:              "Try me inline!",
+					SwitchInlineQuery: &search,
+				}},
+			}},
+		})
 	return ext.EndGroups
 }
 

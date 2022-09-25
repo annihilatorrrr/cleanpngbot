@@ -1,5 +1,5 @@
-github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.10 h1:4P297S3AZ8RsBrMPxJm+jpFCY8kx8KZPNZXp6ThDAbQ=
-github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.10/go.mod h1:r815fYWTudnU9JhtsJAxUtuV7QrSgKpChJkfTSMFpfg=
+github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.10.0.20220925133834-425e17d28c5c h1:w5CKtWTeU2NUKyb9M/CNjZJzt7Ir1KTRi1yxNt2sTA0=
+github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.10.0.20220925133834-425e17d28c5c/go.mod h1:r815fYWTudnU9JhtsJAxUtuV7QrSgKpChJkfTSMFpfg=
 github.com/anaskhan96/soup v1.2.5 h1:V/FHiusdTrPrdF4iA1YkVxsOpdNcgvqT1hG+YtcZ5hM=
 github.com/anaskhan96/soup v1.2.5/go.mod h1:6YnEp9A2yywlYdM4EgDz9NEHclocMepEtku7wg6Cq3s=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
