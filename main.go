@@ -39,7 +39,7 @@ func procequery(rquery, page string) string {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	srchstr := "https://www.cleanpng.com/free/%s.html"
-	if page != "" || page != "0" {
+	if page != "" && page != "0" {
 		srchstr = "https://www.cleanpng.com/free/%s" + fmt.Sprintf(",%s", page) + ".html"
 	}
 	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
