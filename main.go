@@ -18,15 +18,18 @@ import (
 )
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
+	_, err := ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
 		&gotgbot.SendMessageOpts{
 			DisableWebPagePreview: true,
-			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+			ReplyMarkup: gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{{
 					SwitchInlineQuery: "",
 				}},
 			}},
 		})
+	if err != nil {
+		log.Println(err.Error())
+	}
 	return ext.EndGroups
 }
 
