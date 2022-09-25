@@ -101,14 +101,16 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 			DisableWebPagePreview: true,
 			ParseMode:             "html",
 			ReplyMarkup: gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
-				{{
-					Text:         "< Previous Page",
-					CallbackData: fmt.Sprintf("call=%s=%d", data, backint),
-				},
+				{
+					{
+						Text:         "< Previous Page",
+						CallbackData: fmt.Sprintf("call=%s=%d", data, backint),
+					},
 					{
 						Text:         "Next Page >",
 						CallbackData: fmt.Sprintf("call=%s=%d", data, intpage+1),
-					}},
+					},
+				},
 			}},
 		})
 	}
