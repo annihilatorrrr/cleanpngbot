@@ -81,11 +81,11 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 	intpage, _ := strconv.Atoi(page)
 	backint := intpage - 1
-	if backint < 0 {
+	if backint < 2 {
 		backint = 0
 	}
 	var err error
-	if backint == 0 || backint < 0 {
+	if backint == 0 {
 		_, _, err = query.Message.EditText(b, txt, &gotgbot.EditMessageTextOpts{
 			DisableWebPagePreview: true,
 			ParseMode:             "html",
@@ -140,7 +140,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		ReplyMarkup: gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 			{{
 				Text:         "Next Page >",
-				CallbackData: fmt.Sprintf("call=%s=1", msg.Text),
+				CallbackData: fmt.Sprintf("call=%s=2", msg.Text),
 			}},
 		}},
 	})
@@ -188,7 +188,7 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{{
 					Text:         "Next Page >",
-					CallbackData: fmt.Sprintf("call=%s=1", q.Query),
+					CallbackData: fmt.Sprintf("call=%s=2", q.Query),
 				}},
 			}},
 		},
