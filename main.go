@@ -84,7 +84,7 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 	intpage, _ := strconv.Atoi(page)
 	backint := intpage - 1
-	if backint < 2 {
+	if backint < 1 {
 		backint = 0
 	}
 	var err error
@@ -139,6 +139,10 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	txt := procequery(msg.Text, "0")
+	if strings.Contains(txt, "No data Found!") || strings.Contains(txt, "error") {
+		_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{ParseMode: "html"})
+		return ext.EndGroups
+	}
 	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{
 		DisableWebPagePreview: true,
 		ParseMode:             "html",
