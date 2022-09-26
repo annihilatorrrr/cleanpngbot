@@ -48,7 +48,7 @@ func procequery(rquery, page string) string {
 	}
 	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
 	if err != nil {
-		return err.Error()
+		return "<b>No data Found!<b>\n" + err.Error()
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
@@ -67,7 +67,7 @@ func procequery(rquery, page string) string {
 	}
 	txt += "\n<b>@Memers_Gallery</b>"
 	if !aa {
-		txt = "No data Found!\n<b>@Memers_Gallery</b>"
+		txt = "<b>No data Found!\n@Memers_Gallery</b>"
 	}
 	return txt
 }
@@ -78,7 +78,7 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 	data := splited[1]
 	page := splited[2]
 	txt := procequery(data, page)
-	if strings.Contains(txt, "No data Found!") || strings.Contains(txt, "error") {
+	if strings.Contains(txt, "<b>No data Found!") {
 		_, _, _ = query.Message.EditText(b, txt, &gotgbot.EditMessageTextOpts{ParseMode: "html"})
 		return ext.EndGroups
 	}
@@ -139,7 +139,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	txt := procequery(msg.Text, "0")
-	if strings.Contains(txt, "No data Found!") || strings.Contains(txt, "error") {
+	if strings.Contains(txt, "<b>No data Found!") {
 		_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{ParseMode: "html"})
 		return ext.EndGroups
 	}
