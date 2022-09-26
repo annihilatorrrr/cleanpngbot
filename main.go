@@ -39,8 +39,10 @@ func procequery(rquery, page string) string {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	srchstr := "https://www.cleanpng.com/free/%s.html"
-	if page != "" && page != "0" {
+	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolutions and disk sizes:</b>", query)
+	if page != "0" {
 		srchstr = "https://www.cleanpng.com/free/%s" + fmt.Sprintf(",%s", page) + ".html"
+                txt += fmt.Sprintf("<b>Page: %s</b>\n\n", page)
 	}
 	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
 	if err != nil {
@@ -48,7 +50,6 @@ func procequery(rquery, page string) string {
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
-	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolutions and disk sizes:</b>\n\n", query)
 	for _, rdata := range datas {
 		pd := rdata.FindAll("p")
 		if len(pd) < 3 {
@@ -133,7 +134,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if err != nil {
 		return ext.EndGroups
 	}
-	txt := procequery(msg.Text, "")
+	txt := procequery(msg.Text, "0")
 	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{
 		DisableWebPagePreview: true,
 		ParseMode:             "html",
@@ -174,7 +175,7 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 		}, nil)
 		return ext.EndGroups
 	}
-	txt := procequery(q.Query, "")
+	txt := procequery(q.Query, "0")
 	_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
 		gotgbot.InlineQueryResultArticle{
 			Id:          uuid.NewString(),
