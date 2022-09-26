@@ -88,7 +88,6 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 		backint = 0
 	}
 	var err error
-	log.Println(backint, intpage, txt)
 	if backint == 0 {
 		_, _, err = query.Message.EditText(b, txt, &gotgbot.EditMessageTextOpts{
 			DisableWebPagePreview: true,
