@@ -20,7 +20,7 @@ import (
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
 	search := ""
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
+	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
 		&gotgbot.SendMessageOpts{
 			DisableWebPagePreview: true,
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
@@ -198,6 +198,43 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 	return ext.EndGroups
 }
 
+func search(b *gotgbot.Bot, ctx *ext.Context) error {
+	msg := ctx.EffectiveMessage
+	args := ctx.Args()[1:]
+	if len(args) == 0 {
+		_, _ = msg.Reply(b, "I need a query to search!", nil)
+		return ext.EndGroups
+	}
+	query := args[0]
+	if len(query) > 50 {
+		_, _ = msg.Reply(b, "Query is too big to search!", nil)
+		return ext.EndGroups
+	}
+	em, err := msg.Reply(b, "Finding ...", nil)
+	if err != nil {
+		return ext.EndGroups
+	}
+	txt := procequery(query, "0")
+	if strings.Contains(txt, "<b>No data Found!") {
+		_, _, _ = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{ParseMode: "html"})
+		return ext.EndGroups
+	}
+	_, _, err = em.EditText(b, txt, &gotgbot.EditMessageTextOpts{
+		DisableWebPagePreview: true,
+		ParseMode:             "html",
+		ReplyMarkup: gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+			{{
+				Text:         "Next Page >",
+				CallbackData: fmt.Sprintf("call=%s=2", query),
+			}},
+		}},
+	})
+	if err != nil {
+		_, _, _ = em.EditText(b, err.Error(), nil)
+	}
+	return ext.EndGroups
+}
+
 func main() {
 	token := os.Getenv("TOKEN")
 	if token == "" {
@@ -228,6 +265,7 @@ func main() {
 
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
+	dispatcher.AddHandler(handlers.NewCommand("search", search))
 	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
 	dispatcher.AddHandler(handlers.NewCallback(callbackquery.Prefix("call="), callbackhand))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
