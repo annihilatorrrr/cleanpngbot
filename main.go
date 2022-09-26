@@ -193,12 +193,6 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				ParseMode:             "html",
 				DisableWebPagePreview: true,
 			},
-			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
-				{{
-					Text:         "Next Page >",
-					CallbackData: fmt.Sprintf("call=%s=2", q.Query),
-				}},
-			}},
 		},
 	}, nil)
 	return ext.EndGroups
