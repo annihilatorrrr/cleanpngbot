@@ -44,8 +44,8 @@ func procequery(rquery, page string) string {
 		srchstr = "https://www.cleanpng.com/free/%s" + fmt.Sprintf(",%s", page) + ".html"
 		txt += fmt.Sprintf("\n<b>Page: %s</b>\n\n", page)
 	} else {
-                txt += "\n\n"
-        }
+		txt += "\n\n"
+	}
 	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
 	if err != nil {
 		return err.Error()
