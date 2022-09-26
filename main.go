@@ -120,6 +120,7 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 	if err != nil {
 		_, _, _ = query.Message.EditText(b, err.Error(), nil)
 	}
+        _, _ = query.Answer(b, nil, nil)
 	return ext.EndGroups
 }
 
