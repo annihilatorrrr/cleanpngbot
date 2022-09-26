@@ -79,7 +79,7 @@ func callbackhand(b *gotgbot.Bot, ctx *ext.Context) error {
 	page := splited[2]
 	txt := procequery(data, page)
 	if strings.Contains(txt, "No data Found!") || strings.Contains(txt, "error") {
-		_, _, _ = query.Message.EditText(b, txt, nil)
+		_, _, _ = query.Message.EditText(b, txt, &gotgbot.EditMessageTextOpts{ParseMode: "html"})
 		return ext.EndGroups
 	}
 	intpage, _ := strconv.Atoi(page)
