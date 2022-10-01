@@ -259,7 +259,7 @@ func main() {
 				log.Printf("An error occurred while handling update:\n%s", err.Error())
 				return ext.DispatcherActionNoop
 			},
-			MaxRoutines: 20,
+			MaxRoutines: 40,
 		},
 	})
 
@@ -273,7 +273,7 @@ func main() {
 	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
 		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result", "callback_query"},
-		MaxConnections:     20,
+		MaxConnections:     40,
 		SecretToken:        "xyzzz",
 	})
 	if err != nil {
