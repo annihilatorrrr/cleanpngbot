@@ -18,9 +18,16 @@ import (
 	"github.com/google/uuid"
 )
 
+const startMsg = `
+I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!
+Send /download cleanpng_link: To send that PNG as photo in telegram.
+
+By @Memers_Gallery!
+Source code: https://github.com/annihilatorrrr/cleanpngbot`
+
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
 	query := ""
-	_, _ = ctx.EffectiveMessage.Reply(b, "I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!\nBy @Memers_Gallery!\nSource code: https://github.com/annihilatorrrr/cleanpngbot",
+	_, _ = ctx.EffectiveMessage.Reply(b, startMsg,
 		&gotgbot.SendMessageOpts{
 			DisableWebPagePreview: true,
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
@@ -235,6 +242,38 @@ func search(b *gotgbot.Bot, ctx *ext.Context) error {
 	return ext.EndGroups
 }
 
+func downloader(url string) string {
+	if !strings.HasSuffix(url, "/") {
+		url = url + "/"
+	}
+	return fmt.Sprintf("%sdownload-png.html", url)
+}
+
+func download(b *gotgbot.Bot, ctx *ext.Context) error {
+	msg := ctx.EffectiveMessage
+	args := ctx.Args()[1:]
+	if len(args) == 0 {
+		_, _ = msg.Reply(b, "I need a link!", nil)
+		return ext.EndGroups
+	}
+	if !strings.Contains(args[0], "https://www.cleanpng.com/png-") {
+		_, _ = msg.Reply(b, "Not a valid link!", nil)
+		return ext.EndGroups
+	}
+	nm, err := msg.Reply(b, "Processing ...", nil)
+	if err != nil {
+		return ext.EndGroups
+	}
+	link := downloader(args[0])
+	if link == "" {
+		_, _, _ = nm.EditText(b, "Download link not found!", nil)
+		return ext.EndGroups
+	}
+	_, _ = nm.Delete(b, nil)
+	_, _ = b.SendPhoto(msg.Chat.Id, link, &gotgbot.SendPhotoOpts{ReplyToMessageId: msg.MessageId})
+	return ext.EndGroups
+}
+
 func main() {
 	token := os.Getenv("TOKEN")
 	if token == "" {
@@ -266,6 +305,7 @@ func main() {
 	dispatcher := updater.Dispatcher
 	dispatcher.AddHandler(handlers.NewCommand("start", start))
 	dispatcher.AddHandler(handlers.NewCommand("search", search))
+	dispatcher.AddHandler(handlers.NewCommand("download", download))
 	dispatcher.AddHandler(handlers.NewInlineQuery(inlinequery.All, sendinline))
 	dispatcher.AddHandler(handlers.NewCallback(callbackquery.Prefix("call="), callbackhand))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
