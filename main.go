@@ -20,7 +20,7 @@ import (
 
 const startMsg = `
 I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!
-Send /download cleanpng_link: To send that PNG as photo in telegram.
+Send /download cleanpng_link: To send that PNG as photo in telegram or send just send the link to download.
 
 By @Memers_Gallery!
 Source code: https://github.com/annihilatorrrr/cleanpngbot`
@@ -136,12 +136,22 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if msg.Text == "" || msg.ViaBot != nil {
 		return ext.EndGroups
 	}
-	if len(msg.Text) > 50 {
+	if len(msg.Text) > 50 && !strings.Contains(msg.Text, "https://www.cleanpng.com/png-") {
 		_, _ = msg.Reply(b, "Query is too big to search!", nil)
 		return ext.EndGroups
 	}
-	em, err := msg.Reply(b, "Finding ...", nil)
+	em, err := msg.Reply(b, "Processing ...", nil)
 	if err != nil {
+		return ext.EndGroups
+	}
+	if strings.Contains(msg.Text, "https://www.cleanpng.com/png-") {
+		link := downloader(msg.Text)
+		if link == "" {
+			_, _, _ = em.EditText(b, "Download link not found!", nil)
+			return ext.EndGroups
+		}
+		_, _ = em.Delete(b, nil)
+		_, _ = b.SendPhoto(msg.Chat.Id, link, &gotgbot.SendPhotoOpts{ReplyToMessageId: msg.MessageId})
 		return ext.EndGroups
 	}
 	txt := procequery(msg.Text, "0")
