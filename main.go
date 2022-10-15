@@ -136,7 +136,8 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if msg.Text == "" || msg.ViaBot != nil {
 		return ext.EndGroups
 	}
-	if len(msg.Text) > 50 && !strings.Contains(msg.Text, "https://www.cleanpng.com/png-") {
+	todwnld := strings.Contains(msg.Text, "https://www.cleanpng.com/png-")
+	if len(msg.Text) > 50 && !todwnld {
 		_, _ = msg.Reply(b, "Query is too big to search!", nil)
 		return ext.EndGroups
 	}
@@ -144,7 +145,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 	if err != nil {
 		return ext.EndGroups
 	}
-	if strings.Contains(msg.Text, "https://www.cleanpng.com/png-") {
+	if todwnld {
 		link := downloader(msg.Text)
 		if link == "" {
 			_, _, _ = em.EditText(b, "Download link not found!", nil)
