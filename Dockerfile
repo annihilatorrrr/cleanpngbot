@@ -4,7 +4,7 @@ RUN apk update && apk upgrade --available && sync
 COPY . .
 RUN go build -ldflags="-w -s" .
 RUN rm -rf *.go && rm -rf go.*
-FROM alpine:3.16.2
+FROM alpine:3.16.3
 RUN apk update && apk upgrade --available && sync
 COPY --from=builder /cleanpngbot/cleanpngbot /cleanpngbot
 ENTRYPOINT ["/cleanpngbot"]
