@@ -281,7 +281,11 @@ func download(b *gotgbot.Bot, ctx *ext.Context) error {
 		return ext.EndGroups
 	}
 	_, _ = nm.Delete(b, nil)
-	_, _ = b.SendPhoto(msg.Chat.Id, link, &gotgbot.SendPhotoOpts{ReplyToMessageId: msg.MessageId})
+	_, _ = b.SendPhoto(msg.Chat.Id, link, &gotgbot.SendPhotoOpts{
+		ReplyToMessageId: msg.MessageId,
+		Caption:          "<b>By @CleanPNGRoBot from @Memers_Gallery</b>",
+		ParseMode:        "html",
+	})
 	return ext.EndGroups
 }
 
@@ -321,19 +325,17 @@ func main() {
 	dispatcher.AddHandler(handlers.NewCallback(callbackquery.Prefix("call="), callbackhand))
 	dispatcher.AddHandler(handlers.NewMessage(message.ChatType("private"), sendres))
 
-	_, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
+	if _, err = b.SetWebhook(url, &gotgbot.SetWebhookOpts{
 		DropPendingUpdates: true,
 		AllowedUpdates:     []string{"message", "inline_query", "chosen_inline_result", "callback_query"},
 		SecretToken:        "xyzzz",
-	})
-	if err != nil {
+	}); err != nil {
 		panic(err.Error())
 	}
-	err = updater.StartWebhook(b,
+	if err = updater.StartWebhook(b,
 		ext.WebhookOpts{
 			Port: port,
-		})
-	if err != nil {
+		}); err != nil {
 		panic(err.Error())
 	}
 	log.Printf("%s has been started!\n", b.User.Username)
