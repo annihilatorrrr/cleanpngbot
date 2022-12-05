@@ -285,6 +285,7 @@ func download(b *gotgbot.Bot, ctx *ext.Context) error {
 		ReplyToMessageId: msg.MessageId,
 		Caption:          "<b>By @CleanPNGRoBot from @Memers_Gallery</b>",
 		ParseMode:        "html",
+		MessageThreadId:  msg.MessageThreadId,
 	})
 	return ext.EndGroups
 }
