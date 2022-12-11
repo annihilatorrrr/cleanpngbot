@@ -10,7 +10,6 @@ import (
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/callbackquery"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
 
-	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/message"
@@ -335,7 +334,8 @@ func main() {
 	}
 	if err = updater.StartWebhook(b,
 		ext.WebhookOpts{
-			Port: port,
+			Port:        port,
+			SecretToken: "xyzzz",
 		}); err != nil {
 		panic(err.Error())
 	}
