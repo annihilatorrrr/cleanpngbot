@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/PaulSonOfLars/gotgbot/v2"
 	"log"
 	"os"
 	"strconv"
