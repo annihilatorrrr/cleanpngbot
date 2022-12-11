@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/PaulSonOfLars/gotgbot/v2"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/PaulSonOfLars/gotgbot/v2"
 
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/callbackquery"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/inlinequery"
