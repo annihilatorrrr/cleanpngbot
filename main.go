@@ -309,14 +309,12 @@ func main() {
 		panic(err.Error())
 	}
 	updater := ext.NewUpdater(&ext.UpdaterOpts{
-		ErrorLog: nil,
-		DispatcherOpts: ext.DispatcherOpts{
-			Error: func(b *gotgbot.Bot, ctx *ext.Context, err error) ext.DispatcherAction {
+		Dispatcher: ext.NewDispatcher(&ext.DispatcherOpts{
+			UnhandledErrFunc: func(err error) {
 				log.Printf("An error occurred while handling update:\n%s", err.Error())
-				return ext.DispatcherActionNoop
 			},
-			MaxRoutines: 40,
-		},
+			MaxRoutines: -1,
+		}),
 	})
 
 	dispatcher := updater.Dispatcher
@@ -335,6 +333,7 @@ func main() {
 		panic(err.Error())
 	}
 	if err = updater.StartWebhook(b,
+		token,
 		ext.WebhookOpts{
 			Port:        port,
 			SecretToken: "xyzzz",
