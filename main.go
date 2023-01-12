@@ -313,7 +313,6 @@ func main() {
 			UnhandledErrFunc: func(err error) {
 				log.Printf("An error occurred while handling update:\n%s", err.Error())
 			},
-			MaxRoutines: -1,
 		}),
 	})
 
