@@ -300,8 +300,8 @@ func main() {
 	if url == "" {
 		panic("No webhook url was found!")
 	}
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	if port == 0 {
+	port := os.Getenv("PORT")
+	if port == "" {
 		panic("No port was found to bind!")
 	}
 	b, err := gotgbot.NewBot(token, nil)
@@ -335,7 +335,7 @@ func main() {
 	if err = updater.StartWebhook(b,
 		token,
 		ext.WebhookOpts{
-			Port:        port,
+			ListenAddr:  "0.0.0.0:" + port,
 			SecretToken: "xyzzz",
 		}); err != nil {
 		panic(err.Error())
