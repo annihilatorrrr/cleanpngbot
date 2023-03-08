@@ -23,8 +23,7 @@ const startMsg = `
 I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!
 Send /download cleanpng_link to send that PNG as photo in telegram or send just send the link to download.
 
-By @Memers_Gallery!
-Source code: https://github.com/annihilatorrrr/cleanpngbot`
+By @Memers_Gallery!`
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
 	query := ""
@@ -35,6 +34,10 @@ func start(b *gotgbot.Bot, ctx *ext.Context) error {
 				{{
 					Text:              "Try me inline!",
 					SwitchInlineQuery: &query,
+				}},
+				{{
+					Text: "Source code!",
+					Url:  "https://link.tnlink.in/cleanpngrobot",
 				}},
 			}},
 		})
