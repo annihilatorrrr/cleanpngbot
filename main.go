@@ -37,7 +37,7 @@ func start(b *gotgbot.Bot, ctx *ext.Context) error {
 				}},
 				{{
 					Text: "Source code!",
-					Url:  "https://link.tnlink.in/cleanpngrobot",
+					Url:  "https://gplinks.co/CleanPngBotRepo",
 				}},
 			}},
 		})
