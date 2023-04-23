@@ -3,7 +3,7 @@ module cleanpngbot
 go 1.20
 
 require (
-	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.16
+	github.com/PaulSonOfLars/gotgbot/v2 v2.0.0-rc.17
 	github.com/anaskhan96/soup v1.2.5
 	github.com/google/uuid v1.3.0
 )
