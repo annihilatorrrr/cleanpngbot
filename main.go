@@ -59,7 +59,10 @@ func procequery(rquery, page string) string {
 	}
 	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
 	if err != nil {
-		return "<b>No data Found!<b>\n" + err.Error()
+		var erstr strings.Builder
+		erstr.WriteString("<b>No data Found!<b>\n")
+		erstr.WriteString(err.Error())
+		return erstr.String()
 	}
 	datas := soup.HTMLParse(raw).FindAll("article")
 	aa := false
@@ -76,9 +79,10 @@ func procequery(rquery, page string) string {
 			pd[2].Find("span").Text(),
 		)
 	}
-	txt += "\n<b>@Memers_Gallery</b>"
 	if !aa {
 		txt = "<b>No data Found!\n@Memers_Gallery</b>"
+	} else {
+		txt += "\n<b>@Memers_Gallery</b>"
 	}
 	return txt
 }
@@ -259,7 +263,10 @@ func search(b *gotgbot.Bot, ctx *ext.Context) error {
 
 func downloader(url string) string {
 	if !strings.HasSuffix(url, "/") {
-		url = url + "/"
+		var newstr strings.Builder
+		newstr.WriteString(url)
+		newstr.WriteString("/")
+		url = newstr.String()
 	}
 	return fmt.Sprintf("%sdownload-png.html", url)
 }
