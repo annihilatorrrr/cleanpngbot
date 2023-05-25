@@ -50,14 +50,14 @@ func procequery(rquery, page string) string {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	srchstr := "https://www.cleanpng.com/free/%s.html"
-	txt := fmt.Sprintf("<b>Here's the search results for %s with thier resolutions and disk sizes:</b>", query)
+	txt := fmt.Sprintf("<b>Here's the search results for</b> <code>%s</code> <b>with thier resolutions and disk sizes:</b>", query)
 	if page != "0" {
-		srchstr = "https://www.cleanpng.com/free/%s" + fmt.Sprintf(",%s", page) + ".html"
+		srchstr = "https://www.cleanpng.com/free/%s,%s.html"
 		txt += fmt.Sprintf("\n<b>Page: %s</b>\n\n", page)
 	} else {
 		txt += "\n\n"
 	}
-	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
+	raw, err := soup.Get(fmt.Sprintf(srchstr, query, page))
 	if err != nil {
 		var erstr strings.Builder
 		erstr.WriteString("<b>No data Found!<b>\n")
@@ -193,6 +193,16 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Title:               "Error:",
 				Description:         "Write some query!",
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
+				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+				{{
+					Text: "Source code!",
+					Url:  "https://gplinks.co/CleanPngBotRepo",
+				}},
+				{{
+					Text: "Join Updates Channel !",
+					Url:  "https://t.me/Memers_Gallery",
+				}},
+			}},
 			},
 		}, nil)
 		return ext.EndGroups
@@ -204,6 +214,16 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Title:               "Error:",
 				Description:         "Query too big!",
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
+				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+				{{
+					Text: "Source code!",
+					Url:  "https://gplinks.co/CleanPngBotRepo",
+				}},
+				{{
+					Text: "Join Updates Channel !",
+					Url:  "https://t.me/Memers_Gallery",
+				}},
+			}},
 			},
 		}, nil)
 		return ext.EndGroups
@@ -219,6 +239,16 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				ParseMode:             "html",
 				DisableWebPagePreview: true,
 			},
+			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+				{{
+					Text: "Source code!",
+					Url:  "https://gplinks.co/CleanPngBotRepo",
+				}},
+				{{
+					Text: "Join Updates Channel !",
+					Url:  "https://t.me/Memers_Gallery",
+				}},
+			}},
 		},
 	}, nil)
 	return ext.EndGroups
