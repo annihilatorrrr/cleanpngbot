@@ -52,12 +52,12 @@ func procequery(rquery, page string) string {
 	srchstr := "https://www.cleanpng.com/free/%s.html"
 	txt := fmt.Sprintf("<b>Here's the search results for</b> <code>%s</code> <b>with thier resolutions and disk sizes:</b>", query)
 	if page != "0" {
-		srchstr = "https://www.cleanpng.com/free/%s,%s.html"
+		srchstr = "https://www.cleanpng.com/free/%s," + page + ".html"
 		txt += fmt.Sprintf("\n<b>Page: %s</b>\n\n", page)
 	} else {
 		txt += "\n\n"
 	}
-	raw, err := soup.Get(fmt.Sprintf(srchstr, page, query))
+	raw, err := soup.Get(fmt.Sprintf(srchstr, query))
 	if err != nil {
 		var erstr strings.Builder
 		erstr.WriteString("<b>No data Found!<b>\n")
@@ -266,7 +266,7 @@ func search(b *gotgbot.Bot, ctx *ext.Context) error {
 		_, _ = msg.Reply(b, "Query is too big to search!", nil)
 		return ext.EndGroups
 	}
-	em, err := msg.Reply(b, "Finding ...", nil)
+	em, err := msg.Reply(b, "Searching ...", nil)
 	if err != nil {
 		return ext.EndGroups
 	}
