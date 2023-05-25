@@ -19,16 +19,14 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	startMsg = `
+const startMsg = `
 I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!
 Send /download cleanpng_link to send that PNG as photo in telegram or send just send the link to download.
 
 By @Memers_Gallery!`
-	qry = ""
-)
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
+	qry := ""
 	_, _ = ctx.EffectiveMessage.Reply(b, startMsg,
 		&gotgbot.SendMessageOpts{
 			DisableWebPagePreview: true,
@@ -188,6 +186,7 @@ func sendres(b *gotgbot.Bot, ctx *ext.Context) error {
 
 func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 	q := ctx.InlineQuery
+	qry := ""
 	if q.Query == "" {
 		_, _ = q.Answer(b, []gotgbot.InlineQueryResult{
 			gotgbot.InlineQueryResultArticle{
