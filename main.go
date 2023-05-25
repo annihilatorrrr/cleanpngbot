@@ -57,7 +57,7 @@ func procequery(rquery, page string) string {
 	} else {
 		txt += "\n\n"
 	}
-	raw, err := soup.Get(fmt.Sprintf(srchstr, query, page))
+	raw, err := soup.Get(fmt.Sprintf(srchstr, page, query))
 	if err != nil {
 		var erstr strings.Builder
 		erstr.WriteString("<b>No data Found!<b>\n")
