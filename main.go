@@ -50,7 +50,7 @@ func procequery(rquery, page string) string {
 		query = strings.Join(strings.Split(query, " "), "-")
 	}
 	srchstr := "https://www.cleanpng.com/free/%s.html"
-	txt := fmt.Sprintf("<b>Here's the search results for</b> <code>%s</code> <b>with thier resolutions and disk sizes:</b>", query)
+	txt := fmt.Sprintf("<b>Here's the search results for</b> <code>%s</code> <b>with their resolutions and disk sizes:</b>", query)
 	if page != "0" {
 		srchstr = "https://www.cleanpng.com/free/%s," + page + ".html"
 		txt += fmt.Sprintf("\n<b>Page: %s</b>\n\n", page)
