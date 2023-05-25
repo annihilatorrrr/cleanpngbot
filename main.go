@@ -19,21 +19,23 @@ import (
 	"github.com/google/uuid"
 )
 
-const startMsg = `
+const (
+	startMsg = `
 I'm alive, send me a word or try me inline by just writing my username in text box or send /search command followed by the query to search in cleanpng.com!
 Send /download cleanpng_link to send that PNG as photo in telegram or send just send the link to download.
 
 By @Memers_Gallery!`
+	qry = ""
+)
 
 func start(b *gotgbot.Bot, ctx *ext.Context) error {
-	query := ""
 	_, _ = ctx.EffectiveMessage.Reply(b, startMsg,
 		&gotgbot.SendMessageOpts{
 			DisableWebPagePreview: true,
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{{
 					Text:              "Try me inline!",
-					SwitchInlineQuery: &query,
+					SwitchInlineQuery: &qry,
 				}},
 				{{
 					Text: "Source code!",
@@ -195,6 +197,10 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 					{{
+						Text: "Try Again!",
+						SwitchInlineQueryCurrentChat:  &qry,
+					}},
+					{{
 						Text: "Source code!",
 						Url:  "https://gplinks.co/CleanPngBotRepo",
 					}},
@@ -215,6 +221,10 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Description:         "Query too big!",
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+					{{
+						Text: "Try Again!",
+						SwitchInlineQueryCurrentChat:  &qry,
+					}},
 					{{
 						Text: "Source code!",
 						Url:  "https://gplinks.co/CleanPngBotRepo",
@@ -240,6 +250,10 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				DisableWebPagePreview: true,
 			},
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
+				{{
+					Text: "Try Again!",
+					SwitchInlineQueryCurrentChat:  &qry,
+				}},
 				{{
 					Text: "Source code!",
 					Url:  "https://gplinks.co/CleanPngBotRepo",
