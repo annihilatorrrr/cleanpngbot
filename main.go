@@ -197,8 +197,8 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 					{{
-						Text: "Try Again!",
-						SwitchInlineQueryCurrentChat:  &qry,
+						Text:                         "Try Again!",
+						SwitchInlineQueryCurrentChat: &qry,
 					}},
 					{{
 						Text: "Source code!",
@@ -222,8 +222,8 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 					{{
-						Text: "Try Again!",
-						SwitchInlineQueryCurrentChat:  &qry,
+						Text:                         "Try Again!",
+						SwitchInlineQueryCurrentChat: &qry,
 					}},
 					{{
 						Text: "Source code!",
@@ -251,8 +251,8 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 			},
 			ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
 				{{
-					Text: "Try Again!",
-					SwitchInlineQueryCurrentChat:  &qry,
+					Text:                         "Try Again!",
+					SwitchInlineQueryCurrentChat: &qry,
 				}},
 				{{
 					Text: "Source code!",
