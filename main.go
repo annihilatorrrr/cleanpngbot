@@ -194,15 +194,15 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Description:         "Write some query!",
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Provide some query!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
-				{{
-					Text: "Source code!",
-					Url:  "https://gplinks.co/CleanPngBotRepo",
+					{{
+						Text: "Source code!",
+						Url:  "https://gplinks.co/CleanPngBotRepo",
+					}},
+					{{
+						Text: "Join Updates Channel !",
+						Url:  "https://t.me/Memers_Gallery",
+					}},
 				}},
-				{{
-					Text: "Join Updates Channel !",
-					Url:  "https://t.me/Memers_Gallery",
-				}},
-			}},
 			},
 		}, nil)
 		return ext.EndGroups
@@ -215,15 +215,15 @@ func sendinline(b *gotgbot.Bot, ctx *ext.Context) error {
 				Description:         "Query too big!",
 				InputMessageContent: gotgbot.InputTextMessageContent{MessageText: "Query is too big to search!"},
 				ReplyMarkup: &gotgbot.InlineKeyboardMarkup{InlineKeyboard: [][]gotgbot.InlineKeyboardButton{
-				{{
-					Text: "Source code!",
-					Url:  "https://gplinks.co/CleanPngBotRepo",
+					{{
+						Text: "Source code!",
+						Url:  "https://gplinks.co/CleanPngBotRepo",
+					}},
+					{{
+						Text: "Join Updates Channel !",
+						Url:  "https://t.me/Memers_Gallery",
+					}},
 				}},
-				{{
-					Text: "Join Updates Channel !",
-					Url:  "https://t.me/Memers_Gallery",
-				}},
-			}},
 			},
 		}, nil)
 		return ext.EndGroups
