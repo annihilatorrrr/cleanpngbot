@@ -4,7 +4,7 @@ RUN apk update && apk upgrade --available && sync && apk add --no-cache --virtua
 COPY . .
 RUN go build -ldflags="-w -s" .
 RUN upx /cleanpngbot/cleanpngbot
-FROM alpine:3.18.0
+FROM alpine:3.18.2
 RUN apk update && apk upgrade --available && sync
 COPY --from=builder /cleanpngbot/cleanpngbot /cleanpngbot
 ENTRYPOINT ["/cleanpngbot"]
