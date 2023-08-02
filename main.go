@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PaulSonOfLars/gotgbot/v2"
 
@@ -340,6 +341,7 @@ func download(b *gotgbot.Bot, ctx *ext.Context) error {
 		Caption:          "<b>By @CleanPNGRoBot from @Memers_Gallery</b>",
 		ParseMode:        "html",
 		MessageThreadId:  msg.MessageThreadId,
+		RequestOpts:      &gotgbot.RequestOpts{Timeout: 10 * time.Second},
 	})
 	return ext.EndGroups
 }
